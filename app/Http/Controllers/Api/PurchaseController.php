@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\PurchaseResource;
 use App\Models\Plan;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 
 class PurchaseController extends Controller
@@ -103,10 +104,7 @@ class PurchaseController extends Controller
         /** @var \App\Models\User $user **/
         $user = Auth::user();
         $purchases = $user->purchases()->with('plan')->latest()->paginate(5);
-        return response()->json([
-            'status' => true,
-            'purchases' => $purchases
-        ], 200);
+        return PurchaseResource::collection($purchases);
     }
     private function calculateExpiration($startDate, $duration, $unit)
     {
