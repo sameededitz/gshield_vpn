@@ -45,6 +45,8 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::get('/tickets', [TicketController::class, 'index'])->name('api.tickets.index');
 
+    Route::post('/tickets/{ticketId}/priority', [TicketController::class, 'priority'])->name('api.tickets.priority');
+
     Route::get('/ticket/{id}', [TicketController::class, 'show'])->name('api.tickets.show');
 
     Route::post('/ticket/create', [TicketController::class, 'store'])->name('api.tickets.store');

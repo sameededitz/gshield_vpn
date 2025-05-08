@@ -1919,53 +1919,15 @@ a {
 
 }
 
-.chat-top-header-menu a {
-
-	display: inline-block;
-
-	width: 40px;
-
-	height: 40px;
-
-	line-height: 40px;
-
-	font-size: 18px;
-
-	color: #ffffff;
-
-	text-align: center;
-
-	border-radius: 50%;
-
-	margin: 3px;
-
-	background-color: rgb(255 255 255 / 14%);
-
-	border: 1px solid rgb(255 255 255 / 20%);
-
-}
-
 .chat-top-header-menu button {
 
-	display: inline-block;
-
-	width: 40px;
-
-	height: 40px;
-
 	line-height: 40px;
-
-	font-size: 18px;
-
-	color: #ffffff;
-
-	text-align: center;
-
-	border-radius: 50%;
-
-	background-color: rgb(255 255 255 / 14%);
-
-	border: 1px solid rgb(255 255 255 / 20%);
+	font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 12px;
+    background-color: rgb(255 255 255 / 14%);
+    border: 1px solid rgb(255 255 255 / 20%);
 }
 
 .chat-content {

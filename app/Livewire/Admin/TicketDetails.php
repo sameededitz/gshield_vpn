@@ -49,6 +49,14 @@ class TicketDetails extends Component
         $this->uploadedImagesCount = 0;
         $this->dispatch('filepond-reset-attachments');
     }
+    public function updatePriority($ticketId, $priority)
+    {
+        $ticket = Ticket::findOrFail($ticketId);
+        $ticket->priority = $priority;
+        $ticket->save();
+
+        $this->dispatch('sweetAlert', title: 'Updated!', message: 'Ticket priority has been updated.', type: 'success');
+    }
 
     public function startEditing($id)
     {

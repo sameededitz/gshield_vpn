@@ -5,35 +5,55 @@
             <div>
                 <h5 class="mb-1 font-weight-bold">Ticket: {{ Str::limit($ticket->subject, 50) }} </h5>
             </div>
-            <div class="chat-top-header-menu d-flex align-items-center gap-2 ms-auto">
-                @if ($ticket->status == 'open')
-                    <span class="badge bg-success">Open</span>
-                @elseif ($ticket->status == 'closed')
-                    <span class="badge bg-danger">Closed</span>
-                @else
-                    <span class="badge bg-warning">Pending</span>
-                @endif
-                @if ($ticket->status !== 'closed')
-                    <button type="button" wire:click="$js.updateStatus({{ $ticket->id }}, 'closed')"
-                        class="d-flex align-items-center justify-content-center">
-                        <Iconify-icon icon="material-symbols:close-rounded" width="20"
-                            height="20"></Iconify-icon>
+            <div class="chat-top-header-menu d-flex align-items-center gap-3 ms-auto flex-wrap">
+
+                <div class="dropdown">
+                    <button class="btn btn-sm d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Status:
+                        <span
+                            class="badge 
+                            {{ $ticket->status === 'open' ? 'bg-success' : ($ticket->status === 'pending' ? 'bg-warning text-dark' : 'bg-danger') }}">
+                            {{ ucfirst($ticket->status) }}
+                        </span>
                     </button>
-                @endif
-                @if ($ticket->status !== 'open')
-                    <button type="button" wire:click="$js.updateStatus({{ $ticket->id }}, 'open')"
-                        class="d-flex align-items-center justify-content-center">
-                        <Iconify-icon icon="material-symbols:check-circle-outline" width="20"
-                            height="20"></Iconify-icon>
+                    <ul class="dropdown-menu mw-max-content">
+                        @foreach (['open', 'pending', 'closed'] as $status)
+                            @if ($ticket->status !== $status)
+                                <li>
+                                    <a class="dropdown-item cursor-pointer"
+                                        wire:click="$js.updateStatus({{ $ticket->id }}, '{{ $status }}')">
+                                        Mark as {{ ucfirst($status) }}
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn btn-sm d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Priority:
+                        <span
+                            class="badge 
+                            {{ $ticket->priority === 'high' ? 'bg-danger' : ($ticket->priority === 'medium' ? 'bg-warning text-dark' : 'bg-success') }}">
+                            {{ ucfirst($ticket->priority) }}
+                        </span>
                     </button>
-                @endif
-                @if ($ticket->status !== 'pending')
-                    <button type="button" wire:click="$js.updateStatus({{ $ticket->id }}, 'pending')"
-                        class="d-flex align-items-center justify-content-center">
-                        <Iconify-icon icon="material-symbols:hourglass-top" width="20"
-                            height="20"></Iconify-icon>
-                    </button>
-                @endif
+                    <ul class="dropdown-menu mw-max-content">
+                        @foreach (['low', 'medium', 'high'] as $priority)
+                            @if ($ticket->priority !== $priority)
+                                <li>
+                                    <a class="dropdown-item cursor-pointer"
+                                        wire:click="$js.updatePriority({{ $ticket->id }}, '{{ $priority }}')">
+                                        Set to {{ ucfirst($priority) }}
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="chat-content">
@@ -229,21 +249,26 @@
         });
 
         $js('updateStatus', (id, status) => {
-            let actionText = status === 'open' ? 'Reopen' : (status === 'pending' ? 'mark as pending' : 'close');
-            let actionBtnText = status === 'open' ? 'Yes, Reopen it!' : (status === 'pending' ?
-                'Yes, Mark as Pending!' : 'Yes, Close it!');
-
             Swal.fire({
-                title: `Are you sure you want to ${actionText} this Ticket?`,
-                text: 'You won\'t be able to revert this!',
-                icon: 'warning',
+                title: `Change ticket status to "${status}"?`,
+                icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: actionBtnText
+                confirmButtonText: 'Yes, change it!',
             }).then((result) => {
                 if (result.isConfirmed) {
                     $wire.updateStatus(id, status);
+                }
+            });
+        });
+        $js('updatePriority', (id, priority) => {
+            Swal.fire({
+                title: `Set priority to "${priority}"?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, set it!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $wire.updatePriority(id, priority);
                 }
             });
         });

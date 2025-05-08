@@ -21,6 +21,7 @@ class TicketFactory extends Factory
             'user_id' => User::factory(),
             'subject' => $this->faker->sentence,
             'status' => $this->faker->randomElement(['open', 'closed', 'pending']),
+            'priority' => $this->faker->randomElement(['low', 'medium', 'high']),
         ];
     }
 }

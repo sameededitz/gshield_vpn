@@ -18,6 +18,7 @@ class TicketResource extends JsonResource
             'id'         => $this->id,
             'subject'    => $this->subject,
             'status'     => $this->status,
+            'priority'   => $this->priority,
             'created_at' => $this->created_at->toDateTimeString(),
             'messages'   => $this->whenLoaded('messages', function () {
                 return TicketMessageResource::collection($this->messages);

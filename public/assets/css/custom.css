@@ -191,6 +191,13 @@ ul {
 .width-auto{
     width: auto !important;
 }
+.mw-5rem{
+    min-width: 5rem !important;
+ }
+ 
+ .mw-max-content{
+    min-width: max-content !important;
+ }
 
 .dropdown-item:focus,
 .dropdown-item:hover {

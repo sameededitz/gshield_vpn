@@ -66,6 +66,15 @@
                                                 <option value="pending">Pending</option>
                                             </select>
                                         </div>
+                                        <div class="dropdown-item mb-3">
+                                            <label for="status" class="mb-1">Filter by Priority</label>
+                                            <select id="status" class="form-select w-100" wire:model.live="priority">
+                                                <option value="" selected>All</option>
+                                                <option value="low">Low</option>
+                                                <option value="medium">Medium</option>
+                                                <option value="high">High</option>
+                                            </select>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
@@ -78,6 +87,7 @@
                                 <th>User</th>
                                 <th>Subject</th>
                                 <th>Status</th>
+                                <th>Priority</th>
                                 <th>Created</th>
                                 <th>Action</th>
                             </tr>
@@ -99,6 +109,27 @@
                                         @else
                                             <span class="badge bg-warning">Pending</span>
                                         @endif
+                                    </td>
+                                    <td>
+                                        <div class="dropdown-center">
+                                            <button
+                                                class="btn btn-sm 
+                                                {{ $ticket->priority == 'low' ? 'btn-success' : ($ticket->priority == 'medium' ? 'btn-warning' : 'btn-danger') }}"
+                                                type="button" data-bs-toggle="dropdown">
+                                                {{ ucfirst($ticket->priority) }}
+                                            </button>
+                                            <ul class="dropdown-menu mw-5rem">
+                                                <li><a class="dropdown-item cursor-pointer"
+                                                        wire:click="$js.updatePriority({{ $ticket->id }}, 'low')">Low</a>
+                                                </li>
+                                                <li><a class="dropdown-item cursor-pointer"
+                                                        wire:click="$js.updatePriority({{ $ticket->id }}, 'medium')">Medium</a>
+                                                </li>
+                                                <li><a class="dropdown-item cursor-pointer"
+                                                        wire:click="$js.updatePriority({{ $ticket->id }}, 'high')">High</a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                     <td>{{ $ticket->created_at->toFormattedDateString() }}</td>
                                     <td>
@@ -147,22 +178,20 @@
 </div>
 @script
     <script>
-        $js('updateStatus', (id, status) => {
-            let actionText = status === 'open' ? 'Reopen' : (status === 'pending' ? 'mark as pending' : 'close');
-            let actionBtnText = status === 'open' ? 'Yes, Reopen it!' : (status === 'pending' ?
-                'Yes, Mark as Pending!' : 'Yes, Close it!');
+         $js('updatePriority', (id, priority) => {
+            let actionText = `mark as ${priority.charAt(0).toUpperCase() + priority.slice(1)}`;
+            let confirmText = `Yes, ${actionText}!`;
 
             Swal.fire({
-                title: `Are you sure you want to ${actionText} this Ticket?`,
-                text: 'You won\'t be able to revert this!',
+                title: `Are you sure you want to ${actionText} priority?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: actionBtnText
+                confirmButtonText: confirmText
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $wire.updateStatus(id, status);
+                    $wire.updatePriority(id, priority);
                 }
             });
         });
