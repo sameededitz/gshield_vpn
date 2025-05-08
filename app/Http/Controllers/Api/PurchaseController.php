@@ -102,7 +102,7 @@ class PurchaseController extends Controller
     {
         /** @var \App\Models\User $user **/
         $user = Auth::user();
-        $purchases = $user->purchases()->with('plan')->latest()->get();
+        $purchases = $user->purchases()->with('plan')->latest()->paginate(5);
         return response()->json([
             'status' => true,
             'purchases' => $purchases
