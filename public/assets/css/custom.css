@@ -1,0 +1,227 @@
+:root {
+    --bs-primary-bg-subtle: #6c9bd9;
+    --bs-secondary-bg-subtle: #ced4da;
+    --bs-success-bg-subtle: #0f5132;
+    --bs-info-bg-subtle: #6ac2c9;
+    --bs-warning-bg-subtle: #d6b65e;
+    --bs-danger-bg-subtle: #5a121b;
+    --bs-light-bg-subtle: #ced4da;
+    --bs-dark-bg-subtle: #6c757d;
+}
+
+.form-select {
+    width: auto;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23f8f9fa' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.badge {
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.badge-light-primary {
+    color: #778ef7;
+    background-color: #152143;
+    border: 1px solid #152143;
+}
+
+.badge-light-info {
+    color: #4db0ff;
+    background-color: #0b2f52;
+    border: 1px solid #0b2f52;
+}
+
+.badge-light-success {
+    color: #4dc187;
+    background-color: #0c272b;
+    border: 1px solid #0c272b;
+}
+
+.badge-light-danger {
+    color: #e67980;
+    background-color: #2c1c2b;
+    border: 1px solid #2c1c2b;
+}
+
+.badge-light-warning {
+    color: #eab764;
+    background-color: #282625;
+    border: 1px solid #282625;
+}
+
+.badge-light-dark {
+    color: #abacb2;
+    background-color: #181e2e;
+    border: 1px solid #181e2e;
+}
+
+.badge-light-secondary {
+    color: #a46edb;
+    background-color: #1d1a3b;
+    border: 1px solid #1d1a3b;
+}
+
+table tbody tr td {
+    vertical-align: middle !important;
+}
+
+/* Loader CSS */
+/* From Uiverse.io by asgardOP */
+.loader {
+    width: 100%;
+    height: 3px;
+    background-color: rgb(15, 15, 15);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.child {
+    width: 60%;
+    height: 3px;
+    background-color: rgb(107, 27, 255);
+    border-radius: 20px;
+    z-index: 0;
+    margin-left: -60px;
+    animation: go 1s 0s infinite;
+}
+
+@keyframes go {
+    from {
+        margin-left: -100px;
+        width: 80px;
+    }
+
+    to {
+        width: 30px;
+        margin-left: 110px;
+    }
+}
+
+ul {
+    list-style: none;
+}
+
+.text {
+    width: 100px;
+    height: 30px;
+    background-color: transparent;
+    margin-top: 20px;
+    text-align: center;
+    color: #000;
+}
+
+.text::before {
+    content: "Loading";
+    animation: text 1s 0s infinite;
+}
+
+@keyframes text {
+    0% {
+        content: "Loading";
+    }
+
+    30% {
+        content: "Loading.";
+    }
+
+    60% {
+        content: "Loading..";
+    }
+
+    100% {
+        content: "Loading...";
+    }
+}
+
+.loading-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background: rgba(255, 255, 255, 0.34);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    position: fixed;
+    border: none;
+    border-radius: 0;
+    margin-left: 250px;
+    margin-top: 60px;
+    padding-right: 260px;
+}
+
+/*
+	===============================
+			Apex Chart
+	===============================
+*/
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+
+.dropdown-menu {
+    min-width: 16rem;
+}
+.dropdown-menu.chat-action{
+    min-width: 6rem;
+}
+
+.btn-rounded {
+    border-radius: 50% !important;
+    width: 36px;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+.width-auto{
+    width: auto !important;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    background-color: transparent !important;
+    color: #fff !important;
+}
+
+.container.range-plugin,
+.container.range-plugin.show {
+    left: -75px !important;
+}
+
+.modal-backdrop.fade.show {
+    z-index: 0;
+}
+
+.terminal-output {
+    color: #fff !important;
+    overflow-y: auto !important;
+    max-height: 300px !important;
+    white-space: pre-wrap;
+}
+.table-box{
+    position: relative;
+}
+.transparent-btn{
+    background-color: transparent !important;
+    border: none !important;
+    color: #fff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 1rem !important;
+    cursor: pointer !important;
+}

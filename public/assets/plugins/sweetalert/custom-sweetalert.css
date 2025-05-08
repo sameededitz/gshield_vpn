@@ -1,0 +1,121 @@
+/*
+	===============================
+			Light Mode
+	===============================
+*/
+.swal2-popup {
+  background-color: #fff !important;
+}
+
+.swal2-title {
+  color: #3b3f5c;
+}
+
+.swal2-html-container {
+  color: #ba512b;
+}
+
+.swal2-toast.swal2-icon-success .swal2-html-container {
+  color: #00ab55;
+}
+.swal2-toast.swal2-icon-error .swal2-html-container {
+  color: #e7515a;
+}
+.swal2-toast.swal2-icon-warning .swal2-html-container {
+  color: #e2a03f;
+}
+.swal2-toast.swal2-icon-info .swal2-html-container {
+  color: #2196f3;
+}
+.swal2-toast.swal2-icon-question .swal2-html-container {
+  color: #805dca;
+}
+
+.swal2-styled.swal2-default-outline:focus,
+.swal2-styled.swal2-confirm:focus {
+  box-shadow: none;
+}
+
+.swal2-icon.swal2-success .swal2-success-ring {
+  border-color: #ddf5f0;
+}
+
+.swal2-icon.swal2-success [class^=swal2-success-line] {
+  background-color: #00ab55;
+}
+
+.swal2-icon.swal2-error {
+  border-color: #fbeced;
+}
+
+.swal2-icon.swal2-error [class^=swal2-x-mark-line] {
+  background-color: #e7515a;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: #fcf5e9;
+  color: #e2a03f;
+}
+
+.swal2-icon.swal2-info {
+  border-color: #e6f4ff;
+  color: #2196f3;
+}
+
+.swal2-icon.swal2-question {
+  border-color: #f2eafa;
+  color: #805dca;
+}
+
+/*
+	===============================
+			Dark Mode
+	===============================
+*/
+body.dark .swal2-popup {
+  background-color: #0e1726 !important;
+}
+
+body.dark .swal2-title {
+  color: #bfc9d4;
+}
+
+body.dark .swal2-html-container {
+  color: #e95f2b;
+}
+
+body.dark .swal2-styled.swal2-default-outline:focus,
+body.dark .swal2-styled.swal2-confirm:focus {
+  box-shadow: none;
+}
+
+body.dark .swal2-icon.swal2-success .swal2-success-ring {
+  border-color: #0c272b;
+}
+
+body.dark .swal2-icon.swal2-success [class^=swal2-success-line] {
+  background-color: #00ab55;
+}
+
+body.dark .swal2-icon.swal2-error {
+  border-color: #2c1c2b;
+}
+
+body.dark .swal2-icon.swal2-error [class^=swal2-x-mark-line] {
+  background-color: #e7515a;
+}
+
+body.dark .swal2-icon.swal2-warning {
+  border-color: #282625;
+  color: #e2a03f;
+}
+
+body.dark .swal2-icon.swal2-info {
+  border-color: #0b2f52;
+  color: #2196f3;
+}
+
+body.dark .swal2-icon.swal2-question {
+  border-color: #1d1a3b;
+  color: #805dca;
+}
