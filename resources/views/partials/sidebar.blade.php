@@ -2,7 +2,7 @@
     <div class="sidebar-header">
         <div class="d-flex align-items-center">
             <img src="{{ asset('assets/images/logo-icon.png') }}" class="logo-icon" alt="logo icon">
-            <h2 class="logo-text">GSheild</h2>
+            <h2 class="logo-text">GShield</h2>
         </div>
         <div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
         </div>
