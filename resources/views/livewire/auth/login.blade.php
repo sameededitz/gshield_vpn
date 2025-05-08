@@ -8,7 +8,7 @@
                         <div class="card-body">
                             <div class="p-4">
                                 <div class="mb-3 text-center">
-                                    <img src="{{ asset('assets/images/logo-img.png') }}" width="160px" alt="logo" />
+                                    <img src="{{ asset('assets/images/logo-icon.png') }}" width="100px" alt="logo" />
                                 </div>
                                 <div class="text-center mb-4">
                                     <p class="mb-0">Please log in to your account</p>
