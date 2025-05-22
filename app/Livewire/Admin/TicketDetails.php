@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use Livewire\Component;
 use App\Models\TicketMessage;
 use Livewire\WithFileUploads;
+use App\Events\TicketMessageSent;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LivewireFilepond\WithFilePond;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -153,12 +154,7 @@ class TicketDetails extends Component
                 ->toMediaCollection('attachments');
         }
 
-        // Notify the user about the new reply
-        // You can use a notification system or an event to notify the user
-        // For example, using Laravel's notification system:
-        // $ticket->user->notify(new TicketReplyNotification($reply));
-        // Or you can use a custom event
-        // event(new TicketReplySent($reply));
+        TicketMessageSent::dispatch($msg);
 
         $this->dispatch('sweetAlert', title: 'Sent!', message: 'Your reply has been sent.', type: 'success');
         $this->reset('message');

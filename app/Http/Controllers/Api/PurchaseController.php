@@ -85,17 +85,10 @@ class PurchaseController extends Controller
             ->with('plan')
             ->first();
 
-        if (!$activePlan) {
-            return response()->json([
-                'status' => false,
-                'message' => 'No active plan found.'
-            ], 404);
-        }
-
         return response()->json([
             'status' => true,
             'message' => 'Active plan found.',
-            'plan' => $activePlan
+            'plan' => $activePlan ? $activePlan : null,
         ], 200);
     }
 

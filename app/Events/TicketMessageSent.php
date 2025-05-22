@@ -6,12 +6,13 @@ use App\Models\TicketMessage;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use App\Http\Resources\TicketMessageResource;
+use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class TicketMessageSent implements ShouldBroadcast
 {
-    use InteractsWithSockets, SerializesModels;
+    use InteractsWithSockets, SerializesModels, Dispatchable;
 
     public $message;
 
