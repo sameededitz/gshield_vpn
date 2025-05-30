@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Api\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TicketController;
+use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ResourceController;
+use App\Http\Controllers\Api\BillingAddressController;
 
 Route::middleware('guest')->group(function () {
     Route::post('/signup', [AuthController::class, 'signup'])->name('api.signup');
@@ -30,6 +31,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/update-password', [UserController::class, 'updatePassword'])->name('api.profile.update.password');
 
     Route::delete('/user/delete', [UserController::class, 'deleteAccount'])->name('api.profile.delete');
+
+    Route::get('/billing-address', [BillingAddressController::class, 'show'])->name('api.billing.address.show');
+
+    Route::post('/billing-address/store', [BillingAddressController::class, 'store'])->name('api.billing.address.store');
+
+    Route::delete('/billing-address/delete', [BillingAddressController::class, 'destroy'])->name('api.billing.address.delete');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 

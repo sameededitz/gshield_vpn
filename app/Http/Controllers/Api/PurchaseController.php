@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\PurchaseResource;
-use App\Models\Plan;
 use Carbon\Carbon;
+use App\Models\Plan;
 use Illuminate\Http\Request;
+use App\Models\StripeSession;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\PurchaseResource;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -17,6 +18,7 @@ class PurchaseController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'plan_id' => 'required|exists:plans,id',
+            'payment_intent' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -24,6 +26,18 @@ class PurchaseController extends Controller
                 'status' => false,
                 'message' => $validator->errors()->all(),
             ], 400);
+        }
+
+        $paymentIntent = $request->payment_intent;
+        if ($paymentIntent) {
+            $existingSession = StripeSession::where('payment_intent', $paymentIntent)->first();
+
+            if ($existingSession) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Purchase already processed!',
+                ], 200);
+            }
         }
 
         $user = Auth::user();
@@ -66,6 +80,14 @@ class PurchaseController extends Controller
             ]);
 
             $message = 'Purchase created successfully!';
+        }
+
+        if ($paymentIntent) {
+            StripeSession::create([
+                'payment_intent' => $paymentIntent,
+                'user_id' => $user->id,
+                'purchase_id' => $purchase->id,
+            ]);
         }
 
         return response()->json([
