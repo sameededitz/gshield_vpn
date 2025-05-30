@@ -44,6 +44,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/purchase/history', [PurchaseController::class, 'history'])->name('api.plan.history');
 
+    Route::post('/purchase/stripe-session', [PurchaseController::class, 'stripeSession'])->name('api.purchase.stripe.session');
+
     Route::post('/purchase/add', [PurchaseController::class, 'addPurchase'])->name('api.add.purchase');
 
     Route::get('/servers', [ResourceController::class, 'servers'])->name('api.servers');

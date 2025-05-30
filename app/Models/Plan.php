@@ -18,7 +18,11 @@ class Plan extends Model
         'price',
         'duration',
         'duration_unit',
+        'stripe_price_id',
+        'trial_days',
+        'is_best_deal',
     ];
+
     protected $casts = [
         'price' => 'decimal:2',
         'duration' => 'integer',

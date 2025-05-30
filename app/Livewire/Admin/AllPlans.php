@@ -25,6 +25,7 @@ class AllPlans extends Component
     public $duration;
     public $duration_unit;
     public $description;
+    public $stripe_price_id, $trial_days = 0, $is_best_deal = false;
     public $isEdit = false;
 
     protected function rules()
@@ -35,6 +36,9 @@ class AllPlans extends Component
             'duration' => 'required|integer|min:1',
             'duration_unit' => 'required|string|in:day,week,month,year',
             'description' => 'nullable|string|max:1000',
+            'stripe_price_id' => 'nullable|string',
+            'trial_days' => 'nullable|integer|min:0',
+            'is_best_deal' => 'boolean',
         ];
     }
 
@@ -47,6 +51,9 @@ class AllPlans extends Component
             'duration',
             'duration_unit',
             'description',
+            'stripe_price_id',
+            'trial_days',
+            'is_best_deal',
         ]);
         $this->isEdit = false;
         $this->resetValidation();
@@ -64,6 +71,9 @@ class AllPlans extends Component
         $this->duration = $plan->duration;
         $this->duration_unit = $plan->duration_unit;
         $this->description = $plan->description;
+        $this->stripe_price_id = $plan->stripe_price_id;
+        $this->trial_days = $plan->trial_days;
+        $this->is_best_deal = $plan->is_best_deal;
     }
 
     public function savePlan()
@@ -78,6 +88,9 @@ class AllPlans extends Component
                 'duration' => $this->duration,
                 'duration_unit' => $this->duration_unit,
                 'description' => $this->description,
+                'stripe_price_id' => $this->stripe_price_id,
+                'trial_days' => $this->trial_days,
+                'is_best_deal' => $this->is_best_deal,
             ]);
             $message = 'Plan updated successfully.';
         } else {
@@ -87,6 +100,9 @@ class AllPlans extends Component
                 'duration' => $this->duration,
                 'duration_unit' => $this->duration_unit,
                 'description' => $this->description,
+                'stripe_price_id' => $this->stripe_price_id,
+                'trial_days' => $this->trial_days,
+                'is_best_deal' => $this->is_best_deal,
             ]);
             $message = 'Plan created successfully.';
         }

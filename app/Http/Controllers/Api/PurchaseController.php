@@ -97,6 +97,29 @@ class PurchaseController extends Controller
         ], 200);
     }
 
+    public function stripeSession(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'payment_intent' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->all(),
+            ], 400);
+        }
+
+        $paymentIntent = StripeSession::where('payment_intent', $request->payment_intent)->first();
+
+        return response()->json([
+            'status' => true,
+            'is_used' => (bool) $paymentIntent,
+            'payment_intent' => $request->payment_intent,
+            'message' => $paymentIntent ? 'Payment intent found.' : 'Payment intent not found.',
+        ], 200);
+    }
+
     public function active()
     {
         /** @var \App\Models\User $user **/
@@ -131,5 +154,4 @@ class PurchaseController extends Controller
             default => $startDate->addDays(7),
         };
     }
-
 }

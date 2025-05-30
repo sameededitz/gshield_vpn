@@ -58,7 +58,8 @@
                                     <li>
                                         <div class="dropdown-header text-start d-flex justify-content-between mb-3">
                                             <h6 class="text-uppercase mb-0">Filters</h6>
-                                            <h6 class="text-danger mb-0" wire:click="resetFilters" style="cursor: pointer;">Reset</h6>
+                                            <h6 class="text-danger mb-0" wire:click="resetFilters"
+                                                style="cursor: pointer;">Reset</h6>
                                         </div>
                                         <div class="dropdown-item mb-3">
                                             <label for="priceFilter" class="mb-1">Filter by Price</label>
@@ -73,8 +74,7 @@
                                         </div>
                                         <div class="dropdown-item">
                                             <label for="durationFilter" class="mb-1">Filter by Duration</label>
-                                            <select class="form-select w-100"
-                                                wire:model.live="durationUnitFilter">
+                                            <select class="form-select w-100" wire:model.live="durationUnitFilter">
                                                 <option value="" selected>Duration Unit</option>
                                                 <option value="day">Day</option>
                                                 <option value="week">Week</option>
@@ -196,6 +196,33 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="stripe_price_id" class="form-label">Stripe Price ID</label>
+                                <input type="text" class="form-control" id="stripe_price_id"
+                                    placeholder="Stripe Price ID" wire:model.defer="stripe_price_id">
+                                @error('stripe_price_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-12">
+                                <label for="trial_days" class="form-label">Trial Days</label>
+                                <input type="number" class="form-control" id="trial_days" placeholder="Trial Days"
+                                    wire:model.defer="trial_days">
+                                @error('trial_days')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-12">
+                                <label for="is_best_deal" class="form-label">Is Best Deal</label>
+                                <select class="form-select w-100" id="is_best_deal" wire:model.defer="is_best_deal">
+                                    <option value="" selected>Select Option</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                                @error('is_best_deal')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 

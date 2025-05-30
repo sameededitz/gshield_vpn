@@ -22,6 +22,9 @@ class PlanResource extends JsonResource
             'price' => $this->price,
             'duration' => $this->duration,
             'duration_unit' => $this->duration_unit,
+            'stripe_price_id' => $this->stripe_price_id,
+            'trial_period_days' => $this->trial_days ?? 0,
+            'is_best_deal' => (bool) $this->is_best_deal,
             'created_at' => $this->created_at,
         ];
     }

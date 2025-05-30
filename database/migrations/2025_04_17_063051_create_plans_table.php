@@ -19,6 +19,11 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->integer('duration');
             $table->enum('duration_unit', ['day', 'week', 'month', 'year'])->default('day');
+
+            $table->string('stripe_price_id')->nullable();  // Stripe Price ID
+            $table->integer('trial_days')->default(0);      // Trial Days
+            $table->boolean('is_best_deal')->default(false); // Best Deal flag
+
             $table->timestamps();
         });
     }
