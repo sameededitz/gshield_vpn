@@ -15,8 +15,10 @@ Route::get('/', function () {
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 
-Route::get('/test', function () {
-    return view('email.custom-password-reset');
+Route::get('/mailable', function () {
+    $user = App\Models\User::find(2);
+
+    return new App\Mail\VerifyEmailMail($user, 'https://example.com/verify-email?email=' . $user->email . '&hash=' . sha1($user->email));
 });
 
 Route::get('/storage-link', function () {

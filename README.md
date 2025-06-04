@@ -1,6 +1,6 @@
-# 🛡️ FabVPN VPN Admin Panel
+# 🛡️ GShield VPN Admin Panel
 
-**FabVPN Panel** is a robust admin dashboard tailored for managing VPN infrastructures with ease and security. Built for efficiency, it includes end-to-end control of VPS servers, VPN deployments, user accounts, subscription plans, ticketing, user feedback, SMTP configurations, and legal content like Terms of Service and Privacy Policy.
+**GShield Panel** is a robust admin dashboard tailored for managing VPN infrastructures with ease and security. Built for efficiency, it includes end-to-end control of VPS servers, VPN deployments, user accounts, subscription plans, ticketing, user feedback, SMTP configurations, and legal content like Terms of Service and Privacy Policy.
 
 ---
 
@@ -58,7 +58,7 @@
 ### 📦 Requirements
 
 -   PHP 8.2+
--   Laravel 10+
+-   Laravel 12+
 -   MySQL
 -   Composer
 -   VPS Access with SSH
@@ -66,8 +66,8 @@
 ### ⚙️ Setup
 
 ```bash
-git clone https://github.com/sameededitz/fabvpn.git
-cd fabvpn-panel
+git clone https://github.com/sameededitz/gshield_vpn.git
+cd gshield_vpn
 
 composer install
 cp .env.example .env

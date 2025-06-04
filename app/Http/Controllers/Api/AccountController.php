@@ -6,10 +6,11 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Jobs\SendPasswordReset;
-use App\Models\PasswordResetCode;
 use App\Jobs\SendEmailVerification;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 
@@ -53,7 +54,41 @@ class AccountController extends Controller
         ], 200);
     }
 
-    public function sendResetToken(Request $request)
+    public function verifyEmail(Request $request, $id, $hash)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found!'
+            ], 404);
+        }
+
+        // Validate signature
+        if (! $request->hasValidSignature()) {
+            return response()->json(['message' => 'Invalid or expired verification link.'], 403);
+        }
+
+        // Validate hash
+        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+            return response()->json(['message' => 'Invalid verification link.'], 403);
+        }
+
+        if ($user->hasVerifiedEmail()) {
+            return response()->json(['message' => 'Email already verified.'], 200);
+        }
+
+        $user->markEmailAsVerified();
+        event(new Verified($user));
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Email verified successfully!'
+        ], 200);
+    }
+
+    public function sendResetLink(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -76,19 +111,9 @@ class AccountController extends Controller
             ], 404);
         }
 
-        // Generate 6-digit code
-        $code = random_int(100000, 999999);
+        $token = Password::createToken($user);
 
-        // Store code in cache for 15 minutes
-        PasswordResetCode::updateOrCreate(
-            ['email' => $request->email],
-            [
-                'code' => $code,
-                'expires_at' => now()->addMinutes(15)
-            ]
-        );
-
-        SendPasswordReset::dispatch($user, $code)->delay(now()->addSeconds(5));
+        SendPasswordReset::dispatch($user, $token)->delay(now()->addSeconds(5));
 
         return response()->json([
             'status' => true,
@@ -96,61 +121,19 @@ class AccountController extends Controller
         ], 200);
     }
 
-    public function verifyResetCode(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'code' => 'required|digits:6',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => $validator->errors()->all(),
-            ], 422);
-        }
-
-        $record = PasswordResetCode::where('email', $request->email)
-            ->where('code', $request->code)
-            ->first();
-
-        if (!$record) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Invalid code!',
-            ], 422);
-        }
-
-        if ($record->expires_at < now()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Code expired!',
-            ], 422);
-        }
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Code verified successfully.',
-            'data' => [
-                'email' => $record->email,
-                'code' => $record->code,
-            ]
-        ], 200);
-    }
-
     public function resetPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'code' => 'required|digits:6',
+            'token' => 'required',
+            'email' => 'required',
             'password' => [
                 'required',
                 'confirmed',
                 RulesPassword::min(8)
-                    ->mixedCase()
                     ->letters()
                     ->numbers()
-                    ->symbols(),
+                    ->symbols()
+                    ->uncompromised(),
             ],
         ]);
 
@@ -161,43 +144,42 @@ class AccountController extends Controller
             ], 422);
         }
 
-        $record = PasswordResetCode::where('email', $request->email)
-            ->where('code', $request->code)
-            ->first();
-
-        if (!$record) {
+        try {
+            // Decrypt the encrypted email
+            $decodedEmail = urldecode($request->email);
+            $decryptedEmail = decrypt($decodedEmail);
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Invalid Code!'
-            ], 422);
+                'message' => 'The provided link is invalid or has expired. Please request a new password reset link.'
+            ], 400);
         }
 
-        if ($record->expires_at < now()) {
+        $status = Password::reset(
+            [
+                'email' => $decryptedEmail,
+                'password' => $request->password,
+                'password_confirmation' => $request->password_confirmation,
+                'token' => $request->token,
+            ],
+            function ($user) use ($request) {
+                $user->forceFill([
+                    'password' => Hash::make($request->password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
             return response()->json([
-                'status' => false,
-                'message' => 'Code expired!'
-            ], 422);
+                'status' => true,
+                'message' => __('passwords.reset'),
+            ]);
         }
-
-        $user = User::where('email', $record->email)->first();
-        if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'User not found!'
-            ], 404);
-        }
-
-        $user->update([
-            'password' => Hash::make($request->password),
-            'remember_token' => Str::random(60),
-        ]);
-
-        // Delete the record from the database
-        $record->delete();
 
         return response()->json([
-            'status' => true,
-            'message' => 'Password reset successfully.'
-        ], 200);
+            'status' => false,
+            'message' => __($status),
+        ], 400);
     }
 }

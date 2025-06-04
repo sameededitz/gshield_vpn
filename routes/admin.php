@@ -24,7 +24,7 @@ use App\Livewire\Settings\ScriptEditor;
 use App\Livewire\Admin\AllNotifications;
 use App\Http\Controllers\Admin\DashboardController;
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/vps-servers', AllVpsServers::class)->name('vps-servers.all');
