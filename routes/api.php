@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ResourceController;
 use App\Http\Controllers\Api\BillingAddressController;
 use App\Http\Controllers\AppleSubscriptionController;
+use App\Http\Controllers\AppStoreWebhookController;
 
 Route::middleware('guest')->group(function () {
     Route::post('/signup', [AuthController::class, 'signup'])->name('api.signup');
@@ -75,5 +76,12 @@ Route::get('/vps-servers', [ResourceController::class, 'vpsServers']);
 
 Route::get('/plans', [ResourceController::class, 'plans']);
 
-// routes/api.php
-Route::post('/apple/subscription/callback', [AppleSubscriptionController::class, 'handle']);
+Route::prefix('webhook')->group(function () {
+    // Main webhook endpoint for App Store Server notifications
+    Route::post('/appstore-notifications', [AppStoreWebhookController::class, 'handle'])
+         ->name('appstore.webhook.handle');
+    
+    // Webhook verification endpoint (for testing)
+    Route::get('/appstore-verify', [AppStoreWebhookController::class, 'verify'])
+         ->name('appstore.webhook.verify');
+});

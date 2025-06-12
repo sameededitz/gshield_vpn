@@ -34,6 +34,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
         'google_id',
         'apple_id',
+        'is_premium',
+        'subscription_status',
+        'subscribed_product',
+        'subscription_expires_at',
     ];
 
     /**
@@ -58,6 +62,8 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'banned_at' => 'datetime',
             'last_login' => 'datetime',
+            'is_premium' => 'boolean',
+            'subscription_expires_at' => 'datetime',
         ];
     }
 
@@ -100,6 +106,28 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isBanned(): bool
     {
         return !is_null($this->banned_at);
+    }
+      public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function activeSubscription()
+    {
+        return $this->hasOne(Subscription::class)->active();
+    }
+
+    // Helper methods
+    public function hasPremiumAccess(): bool
+    {
+        return $this->is_premium && 
+               $this->activeSubscription()->exists();
+    }
+
+    public function getSubscriptionDaysRemaining(): int
+    {
+        $activeSubscription = $this->activeSubscription;
+        return $activeSubscription ? $activeSubscription->getRemainingDays() : 0;
     }
 
     /**
