@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ResourceController;
 use App\Http\Controllers\Api\BillingAddressController;
+use App\Http\Controllers\AppleSubscriptionController;
 
 Route::middleware('guest')->group(function () {
     Route::post('/signup', [AuthController::class, 'signup'])->name('api.signup');
@@ -73,3 +74,6 @@ Route::post('/feedback/store', [ResourceController::class, 'addFeedback'])->name
 Route::get('/vps-servers', [ResourceController::class, 'vpsServers']);
 
 Route::get('/plans', [ResourceController::class, 'plans']);
+
+// routes/api.php
+Route::post('/apple/subscription/callback', [AppleSubscriptionController::class, 'handle']);
