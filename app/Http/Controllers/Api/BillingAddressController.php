@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BillingAddressResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -58,7 +59,7 @@ class BillingAddressController extends Controller
         $user = Auth::user();
         return response()->json([
             'status' => true,
-            'user' => new UserResource($user->load('billingAddress')),
+            'user' => new BillingAddressResource($user->load('billingAddress')),
         ], 200);
     }
 
