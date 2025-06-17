@@ -38,7 +38,7 @@ class TestAppleConnection extends Command
 
             // Test Apple public keys
             $this->info('3. Testing Apple public keys...');
-            $testPayload = 'eyJhbGciOiJFUzI1NiIsIng1YyI6WyJNSUlCaVRDQ0FTNmdBd0lCQWdJSU...'; // Sample JWT
+            $testPayload = 'eyJhbGciOiJFUzI1NiIsImtpZCI6Ijh... (very long, with two dots) ...Qssw5c'; // Sample JWT
             try {
                 // This will fail but shows we can fetch keys
                 $jwtService->verifyAndDecodePayload($testPayload);
