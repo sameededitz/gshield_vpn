@@ -93,6 +93,8 @@ class SocialController extends Controller
             /** @disregard @phpstan-ignore-line */
             $appleUser = Socialite::driver('apple')->stateless()->userFromToken($id_token);
 
+            Log::info('Apple User Data: ', (array) $appleUser);
+
             // Extract user details
             $appleId = $appleUser->id;
             $email = $appleUser->email;
