@@ -57,7 +57,7 @@ class BillingAddressController extends Controller
     public function show()
     {
         /** @var \App\Models\User $user **/
-        $billingAddress = Auth::user()->billingAddress;
+        $billingAddress = Auth::user()->load('billingAddress');
 
         if (!$billingAddress) {
             return response()->json([
@@ -68,7 +68,7 @@ class BillingAddressController extends Controller
 
         return response()->json([
             'status' => true,
-            'user' => new BillingAddressResource($billingAddress),
+            'user' => new UserResource($billingAddress),
         ]);
     }
 
