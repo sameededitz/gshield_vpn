@@ -33,20 +33,28 @@ class SocialController extends Controller
             /** @disregard @phpstan-ignore-line */
             $googleUser = Socialite::driver('google')->userFromToken($accessToken);
 
-            // Check if the user already exists
-            $user = User::where('email', $googleUser->getEmail())->first();
+            $googleId = $googleUser->getId();
+            $email = $googleUser->getEmail();
+            $name = $googleUser->getName();
 
-            if ($user) {
-                // If user exists, update all details except email
-                $user->update([
-                    'google_id' => $googleUser->getId(),
-                ]);
-            } else {
-                // If user does not exist, create a new user
+            // First, check by google_id
+            $user = User::where('google_id', $googleId)->first();
+
+            if (!$user && $email) {
+                // Then fallback to email
+                $existing = User::where('email', $email)->first();
+                if ($existing) {
+                    $existing->update(['google_id' => $googleId]);
+                    $user = $existing;
+                }
+            }
+
+            // Create new if no user found
+            if (!$user) {
                 $user = User::create([
-                    'name' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
-                    'google_id' => $googleUser->getId(),
+                    'name' => $name,
+                    'email' => $email,
+                    'google_id' => $googleId,
                     'password' => Hash::make(Str::random(10)),
                     'email_verified_at' => now(),
                 ]);
@@ -100,13 +108,17 @@ class SocialController extends Controller
             $email = $appleUser->email;
             $name = $appleUser->name ?? $email;
 
-            $user = User::where('apple_id', $appleId)->orWhere('email', $email)->first();
+            $user = User::where('apple_id', $appleId)->first();
 
-            if ($user) {
-                // Update Apple ID if needed
-                $user->update(['apple_id' => $appleId]);
-            } else {
-                // Create a new user
+            if (!$user && $email) {
+                $existing = User::where('email', $email)->first();
+                if ($existing) {
+                    $existing->update(['apple_id' => $appleId]);
+                    $user = $existing;
+                }
+            }
+
+            if (!$user) {
                 $user = User::create([
                     'name' => $name,
                     'email' => $email,
