@@ -57,12 +57,19 @@ class BillingAddressController extends Controller
     public function show()
     {
         /** @var \App\Models\User $user **/
-        $user = Auth::user()->billingAddress;
-        dd($user);
+        $billingAddress = Auth::user()->billingAddress;
+
+        if (!$billingAddress) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Billing address not found.',
+            ], 404);
+        }
+
         return response()->json([
             'status' => true,
-            'user' => new BillingAddressResource($user),
-        ], 200);
+            'user' => new BillingAddressResource($billingAddress),
+        ]);
     }
 
     /**

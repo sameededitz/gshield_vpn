@@ -25,6 +25,5 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at->toIso8601String(),
             'billing_address' => new BillingAddressResource($this->whenLoaded('billingAddress')),
         ];
-
     }
 }
