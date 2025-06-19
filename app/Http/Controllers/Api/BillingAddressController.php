@@ -58,6 +58,7 @@ class BillingAddressController extends Controller
     {
         /** @var \App\Models\User $user **/
         $user = Auth::user()->billingAddress;
+        dd($user);
         return response()->json([
             'status' => true,
             'user' => new BillingAddressResource($user),
