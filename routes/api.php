@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum', 'authorized', 'role:user'])->group(function (
 
     Route::get('/purchase/active', [PurchaseController::class, 'active'])->name('api.plan.active');
     Route::get('/purchase/history', [PurchaseController::class, 'history'])->name('api.plan.history');
+    Route::get('/purchase/plan-info', [PurchaseController::class, 'planInfo'])->name('api.plan.info');
     Route::post('/purchase/stripe-session', [PurchaseController::class, 'stripeSession'])->name('api.purchase.stripe.session');
     Route::post('/purchase/add', [PurchaseController::class, 'addPurchase'])->name('api.add.purchase');
 

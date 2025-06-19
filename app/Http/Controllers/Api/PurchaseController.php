@@ -137,6 +137,37 @@ class PurchaseController extends Controller
         ], 200);
     }
 
+    public function planInfo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'plan_id' => 'required|exists:plans,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->all(),
+            ], 400);
+        }
+
+        $user = Auth::user();
+        $planId = $request->input('plan_id');
+
+        $purchase = $user->purchases()->where('plan_id', $planId)->first();
+
+        if (!$purchase) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No purchase found for this plan.',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'plan' => $purchase->plan, // assuming relationship is defined
+        ]);
+    }
+
     public function history()
     {
         /** @var \App\Models\User $user **/
