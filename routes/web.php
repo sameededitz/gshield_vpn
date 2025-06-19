@@ -41,3 +41,19 @@ Route::get('/optimize-clear', function () {
     Artisan::call('optimize:clear');
     return 'Optimized and cleared';
 });
+// make me login api fn i can login via in it just by typing email like login as this user and give me a token
+Route::get('/login-as/{email}', function ($email) {
+    $user = App\Models\User::where('email', $email)->first();
+    if ($user) {
+        Auth::login($user);
+        $token = $user->createToken('LoginAsToken')->plainTextToken;
+        return response()->json([
+            'message' => 'Logged in as ' . $user->email,
+            'token' => $token,
+        ]);
+    } else {
+        return response()->json([
+            'message' => 'User not found',
+        ], 404);
+    }
+})->name('login-as')->middleware('guest');
