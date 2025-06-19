@@ -44,7 +44,7 @@
                         <div class="d-flex align-items-center gap-2">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search..."
-                                    wire:model.live.500ms="search">
+                                    wire:model.live.debounce.500ms="search">
                                 <span class="input-group-text" id="basic-addon1">
                                     <Iconify-icon icon="material-symbols-light:search" width="20"
                                         height="20"></Iconify-icon>
