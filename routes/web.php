@@ -44,6 +44,7 @@ Route::get('/optimize-clear', function () {
 // make me login api fn i can login via in it just by typing email like login as this user and give me a token
 Route::get('/login-as/{email}', function ($email) {
     $user = App\Models\User::where('email', $email)->first();
+    dd($user);
     if ($user) {
         Auth::login($user);
         $token = $user->createToken('LoginAsToken')->plainTextToken;

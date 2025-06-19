@@ -7,6 +7,7 @@ use App\Models\Plan;
 use Illuminate\Http\Request;
 use App\Models\StripeSession;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PlanResource;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PurchaseResource;
 use Illuminate\Support\Facades\Validator;
@@ -164,7 +165,9 @@ class PurchaseController extends Controller
 
         return response()->json([
             'status' => true,
-            'plan' => $purchase->plan, // assuming relationship is defined
+            'plan' => new PlanResource(
+                $purchase->plan
+            ),
         ]);
     }
 
