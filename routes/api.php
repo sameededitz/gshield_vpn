@@ -9,7 +9,6 @@ use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ResourceController;
 use App\Http\Controllers\Api\BillingAddressController;
-use App\Http\Controllers\AppleSubscriptionController;
 use App\Http\Controllers\AppStoreWebhookController;
 
 Route::middleware('guest')->group(function () {

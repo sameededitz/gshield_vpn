@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'email_verified_at' => $this->email_verified_at,
             'role' => $this->role,
             'created_at' => $this->created_at->toIso8601String(),
+            'billing_address' => new BillingAddressResource($this->whenLoaded('billingAddress')),
         ];
 
     }
