@@ -161,4 +161,29 @@ class AllUsers extends Component
             ->extends('layouts.app')
             ->section('content');
     }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+    public function updatingEmailVerified()
+    {
+        $this->resetPage();
+    }
+    public function updatingLastLoginStart()
+    {
+        $this->resetPage();
+    }
+    public function updatingLastLoginEnd()
+    {
+        $this->resetPage();
+    }
+    public function updatingRegisteredStart()
+    {
+        $this->resetPage();
+    }
+    public function updatingRegisteredEnd()
+    {
+        $this->resetPage();
+    }
 }
