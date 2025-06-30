@@ -54,9 +54,9 @@ class AccountController extends Controller
         ], 200);
     }
 
-    public function verifyEmail(Request $request, $id, $hash)
+    public function verifyEmail(Request $request)
     {
-        $user = User::find($id);
+        $user = User::find($request->query('id'));
 
         if (!$user) {
             return response()->json([
@@ -71,7 +71,7 @@ class AccountController extends Controller
         }
 
         // Validate hash
-        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+        if (! hash_equals((string) $request->query('hash'), sha1($user->getEmailForVerification()))) {
             return response()->json(['message' => 'Invalid verification link.'], 403);
         }
 
