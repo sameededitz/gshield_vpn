@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('_appstore_webhook_log', function (Blueprint $table) {
+        Schema::create('appstore_webhook_log', function (Blueprint $table) {
            $table->id();
             $table->string('notification_type');
             $table->string('subtype')->nullable();
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('_appstore_webhook_log');
+        Schema::dropIfExists('appstore_webhook_log');
     }
 };

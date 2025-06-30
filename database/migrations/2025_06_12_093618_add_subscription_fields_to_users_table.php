@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-          Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->boolean('is_premium')->default(false);
             $table->string('subscription_status')->nullable();
             $table->string('subscribed_product')->nullable();
@@ -31,6 +31,6 @@ return new class extends Migration
                 'subscribed_product',
                 'subscription_expires_at'
             ]);
-            });
+        });
     }
 };

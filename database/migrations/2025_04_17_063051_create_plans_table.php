@@ -19,11 +19,9 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->integer('duration');
             $table->enum('duration_unit', ['day', 'week', 'month', 'year'])->default('day');
-
-            // $table->string('stripe_price_id')->nullable();  
-            // $table->integer('trial_days')->default(0);    
-            // $table->boolean('is_best_deal')->default(false); 
-
+            $table->string('stripe_price_id')->nullable();
+            $table->integer('trial_days')->default(0);
+            $table->boolean('is_best_deal')->default(false);
             $table->timestamps();
         });
     }

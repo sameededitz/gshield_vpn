@@ -23,6 +23,8 @@ return new class extends Migration
             $table->timestamp('last_login')->nullable();
             $table->timestamp('banned_at')->nullable();
             $table->text('ban_reason')->nullable();
+            $table->string('google_id')->nullable();
+            $table->string('apple_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
