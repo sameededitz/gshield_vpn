@@ -107,7 +107,18 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return !is_null($this->banned_at);
     }
-      public function subscriptions()
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function hasAnyRole(string ...$roles): bool
+    {
+        return in_array($this->role, $roles);
+    }
+
+    public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
     }
@@ -120,25 +131,13 @@ class User extends Authenticatable implements MustVerifyEmail
     // Helper methods
     public function hasPremiumAccess(): bool
     {
-        return $this->is_premium && 
-               $this->activeSubscription()->exists();
+        return $this->is_premium &&
+            $this->activeSubscription()->exists();
     }
 
     public function getSubscriptionDaysRemaining(): int
     {
         $activeSubscription = $this->activeSubscription;
         return $activeSubscription ? $activeSubscription->getRemainingDays() : 0;
-    }
-
-    /**
-     * Check if the user has any of the given roles.
-     *
-     * @param  string  ...$roles
-     * @return bool
-     */
-    public function hasAnyRole(string ...$roles): bool
-    {
-        // Assuming the user's role is stored in the "role" attribute.
-        return in_array($this->role, $roles);
     }
 }
