@@ -19,7 +19,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login/apple', [SocialController::class, 'apple'])->name('api.login.apple');
 
     Route::post('/email/resend-verification', [AccountController::class, 'resendEmail'])->name('api.verify.resend');
-    Route::get('/email/verify', [AccountController::class, 'verifyEmail'])->name('verification.verify');
+    Route::get('/email/verify/{id}/{hash}', [AccountController::class, 'verifyEmail'])->name('verification.verify');
 
     Route::post('/forgot-password', [AccountController::class, 'sendResetLink'])->name('api.password.reset');
     Route::post('/reset-password', [AccountController::class, 'resetPassword'])->name('api.password.update');

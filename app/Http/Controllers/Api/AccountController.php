@@ -46,7 +46,8 @@ class AccountController extends Controller
             ], 200);
         }
 
-        SendEmailVerification::dispatch($user)->delay(now()->addSeconds(5));
+        // SendEmailVerification::dispatch($user)->delay(now()->addSeconds(5));
+        $user->sendEmailVerificationNotification();
 
         return response()->json([
             'status' => true,
@@ -54,9 +55,9 @@ class AccountController extends Controller
         ], 200);
     }
 
-    public function verifyEmail(Request $request)
+    public function verifyEmail(Request $request, $id, $hash)
     {
-        $user = User::find($request->query('id'));
+        $user = User::find($id);
 
         if (!$user) {
             return response()->json([
@@ -71,7 +72,7 @@ class AccountController extends Controller
         }
 
         // Validate hash
-        if (! hash_equals((string) $request->query('hash'), sha1($user->getEmailForVerification()))) {
+        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
             return response()->json(['message' => 'Invalid verification link.'], 403);
         }
 
