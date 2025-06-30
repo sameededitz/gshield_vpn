@@ -112,7 +112,7 @@ class AllUsers extends Component
             User::create([
                 'name' => $this->name,
                 'email' => $this->email,
-                'role' => $this->role,
+                'role' => 'user',
                 'password' => Hash::make($this->password),
                 'email_verified_at' => now(),
             ]);
