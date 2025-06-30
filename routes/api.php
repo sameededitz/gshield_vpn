@@ -60,10 +60,12 @@ Route::get('/vps-servers', [ResourceController::class, 'vpsServers']);
 
 Route::get('/plans', [ResourceController::class, 'plans']);
 
-    // Main webhook endpoint for App Store Server notifications
-    Route::post('/appstore-notifications', [AppStoreWebhookController::class, 'handle'])
-         ->name('appstore.webhook.handle');
-    
-    // Webhook verification endpoint (for testing)
-    Route::get('/appstore-verify', [AppStoreWebhookController::class, 'verify'])
-         ->name('appstore.webhook.verify');
+Route::get('/options', [ResourceController::class, 'options']);
+
+// Main webhook endpoint for App Store Server notifications
+Route::post('/appstore-notifications', [AppStoreWebhookController::class, 'handle'])
+    ->name('appstore.webhook.handle');
+
+// Webhook verification endpoint (for testing)
+Route::get('/appstore-verify', [AppStoreWebhookController::class, 'verify'])
+    ->name('appstore.webhook.verify');
