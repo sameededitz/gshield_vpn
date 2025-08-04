@@ -9,7 +9,6 @@ use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\QRLoginController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ResourceController;
-use App\Http\Controllers\AppStoreWebhookController;
 use App\Http\Controllers\Api\BillingAddressController;
 
 Route::middleware('guest')->group(function () {
@@ -62,17 +61,6 @@ Route::middleware(['auth:sanctum', 'authorized', 'role:user'])->group(function (
 });
 
 Route::post('/feedback/store', [ResourceController::class, 'addFeedback'])->name('api.feedback.add');
-
 Route::get('/vps-servers', [ResourceController::class, 'vpsServers']);
-
 Route::get('/plans', [ResourceController::class, 'plans']);
-
 Route::get('/options', [ResourceController::class, 'options']);
-
-// Main webhook endpoint for App Store Server notifications
-Route::post('/appstore-notifications', [AppStoreWebhookController::class, 'handle'])
-    ->name('appstore.webhook.handle');
-
-// Webhook verification endpoint (for testing)
-Route::get('/appstore-verify', [AppStoreWebhookController::class, 'verify'])
-    ->name('appstore.webhook.verify');

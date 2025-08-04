@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('purchase:expire')
+Schedule::command('purchases:expire-ended')
     ->daily()
     ->onFailure(function () {
-        Log::error('Failed to run purchase:expire command');
+        Log::error('Failed to run purchases:expire-ended command');
     });

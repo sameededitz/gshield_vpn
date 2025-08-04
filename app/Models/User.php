@@ -117,27 +117,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return in_array($this->role, $roles);
     }
-
-    public function subscriptions()
-    {
-        return $this->hasMany(Subscription::class);
-    }
-
-    public function activeSubscription()
-    {
-        return $this->hasOne(Subscription::class)->active();
-    }
-
-    // Helper methods
-    public function hasPremiumAccess(): bool
-    {
-        return $this->is_premium &&
-            $this->activeSubscription()->exists();
-    }
-
-    public function getSubscriptionDaysRemaining(): int
-    {
-        $activeSubscription = $this->activeSubscription;
-        return $activeSubscription ? $activeSubscription->getRemainingDays() : 0;
-    }
 }
