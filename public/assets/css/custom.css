@@ -232,3 +232,6 @@ ul {
     font-size: 1rem !important;
     cursor: pointer !important;
 }
+.cursor-pointer {
+    cursor: pointer !important;
+}

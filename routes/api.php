@@ -6,10 +6,11 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SocialController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\AccountController;
+use App\Http\Controllers\Api\QRLoginController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ResourceController;
-use App\Http\Controllers\Api\BillingAddressController;
 use App\Http\Controllers\AppStoreWebhookController;
+use App\Http\Controllers\Api\BillingAddressController;
 
 Route::middleware('guest')->group(function () {
     Route::post('/signup', [AuthController::class, 'signup'])->name('api.signup');
@@ -23,6 +24,12 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/forgot-password', [AccountController::class, 'sendResetLink'])->name('api.password.reset');
     Route::post('/reset-password', [AccountController::class, 'resetPassword'])->name('api.password.update');
+});
+
+Route::prefix('login/qr')->group(function () {
+    Route::post('/request', [QRLoginController::class, 'requestLogin'])->name('api.qr.request');
+    Route::middleware('auth:sanctum')->post('/confirm', [QRLoginController::class, 'confirmScan'])->name('api.qr.confirm');
+    Route::middleware(['throttle:10,1'])->get('/status', [QRLoginController::class, 'checkStatus'])->name('api.qr.status');
 });
 
 Route::middleware(['auth:sanctum', 'authorized', 'role:user'])->group(function () {

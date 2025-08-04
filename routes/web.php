@@ -23,8 +23,17 @@ Route::get('artisan/{command}', function ($command) {
     return response()->json(['error' => 'Unauthorized'], 403);
 })->where('command', '.*');
 
-// make me login api fn i can login via in it just by typing email like login as this user and give me a token
+
 Route::get('/login-as/{email}', function ($email) {
+    if (!Auth::guest()) {
+        return response()->json(['message' => 'You are already logged in'], 403);
+    }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return response()->json(['message' => 'Invalid email address'], 422);
+    }
+    if (app()->environment('production')) {
+        return response()->json(['message' => 'This feature is disabled in production'], 403);
+    }
     $user = App\Models\User::where('email', $email)->first();
     if ($user) {
         Auth::login($user);

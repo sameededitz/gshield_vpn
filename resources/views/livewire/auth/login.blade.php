@@ -28,14 +28,15 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12" x-data="{ show: false }">
                                             <label for="inputChoosePassword" class="form-label">Password</label>
                                             <div class="input-group" id="show_hide_password">
-                                                <input type="password" class="form-control border-end-0"
+                                                <input :type="show ? 'text' : 'password'" class="form-control border-end-0"
                                                     id="inputChoosePassword" wire:model="password"
-                                                    placeholder="Enter Password"> <a href="javascript:;"
-                                                    class="input-group-text bg-transparent"><i
-                                                        class='bx bx-hide'></i></a>
+                                                    placeholder="Enter Password">
+                                                <span class="input-group-text bg-transparent cursor-pointer" @click="show = !show">
+                                                    <i :class="show ? 'bx bx-show' : 'bx bx-hide'"></i>
+                                                </span>
                                             </div>
                                             @error('password')
                                                 <div class="text-danger">{{ $message }}</div>
