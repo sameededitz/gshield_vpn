@@ -70,7 +70,95 @@ class ResourceController extends Controller
             'about_us' => $options['about_us'],
         ]);
     }
-    
+
+    public function registerClient(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ip' => 'required|ip',
+            'client_name' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'error' => $validator->errors()->all()
+            ], 422);
+        }
+
+        $ip = $request->ip;
+        $clientName = $request->client_name;
+        $password = $request->password;
+
+        $checkURL = "http://{$ip}:5000/api/ikev2/clients/{$clientName}";
+        $registerURL = "http://{$ip}:5000/api/ikev2/clients/generate";
+
+        $headers = [
+            'X-API-TOKEN' => env('VPS_API_TOKEN'),
+            'Content-Type' => 'application/json',
+        ];
+
+        try {
+            // Step 1: Try registering
+            $registerResponse = Http::withHeaders($headers)
+                ->timeout(10)
+                ->post($registerURL, [
+                    'name' => $clientName,
+                    'password' => $password,
+                ]);
+
+            if ($registerResponse->successful()) {
+                return response()->json([
+                    'connected' => true,
+                    'message' => 'Client successfully registered.',
+                    'data' => $registerResponse->json(),
+                ]);
+            }
+
+            // Step 2: If failed with 500, delete and retry
+            if ($registerResponse->status() === 500) {
+                $deleteResponse = Http::withHeaders($headers)
+                    ->timeout(5)
+                    ->delete($checkURL);
+
+                if ($deleteResponse->successful()) {
+                    // Retry registration
+                    $retryRegister = Http::withHeaders($headers)
+                        ->timeout(10)
+                        ->post($registerURL, [
+                            'name' => $clientName,
+                            'password' => $password,
+                        ]);
+
+                    if ($retryRegister->successful()) {
+                        return response()->json([
+                            'connected' => true,
+                            'message' => 'Client registered after retry.',
+                            'data' => $retryRegister->json(),
+                        ]);
+                    }
+
+                    return response()->json([
+                        'connected' => false,
+                        'message' => 'Registration failed after retry.',
+                        'retry_status' => $retryRegister->status(),
+                    ], 500);
+                }
+            }
+            return response()->json([
+                'connected' => false,
+                'message' => 'Initial registration failed.',
+                'status' => $registerResponse->status(),
+            ], $registerResponse->status());
+        } catch (\Exception $e) {
+            return response()->json([
+                'connected' => false,
+                'message' => 'Something went wrong.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function addFeedback(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -176,5 +264,4 @@ class ResourceController extends Controller
 
         return $earthRadius * $c; // Distance in KM
     }
-
 }

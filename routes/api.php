@@ -50,6 +50,7 @@ Route::middleware(['auth:sanctum', 'authorized', 'role:user'])->group(function (
 
     Route::get('/servers', [ResourceController::class, 'servers'])->name('api.servers');
     Route::get('/nearest-server', [ResourceController::class, 'nearestServer']);
+    Route::post('/vpn/register-client', [ResourceController::class, 'registerClient'])->name('api.vpn.register.client');
 
     Route::get('/tickets', [TicketController::class, 'index'])->name('api.tickets.index');
     Route::post('/tickets/{ticketId}/priority', [TicketController::class, 'priority'])->name('api.tickets.priority');
