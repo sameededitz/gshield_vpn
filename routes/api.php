@@ -28,7 +28,7 @@ Route::middleware('guest')->group(function () {
 Route::prefix('login/qr')->group(function () {
     Route::post('/request', [QRLoginController::class, 'requestLogin'])->name('api.qr.request');
     Route::middleware('auth:sanctum')->post('/confirm', [QRLoginController::class, 'confirmScan'])->name('api.qr.confirm');
-    Route::middleware(['throttle:10,1'])->get('/status', [QRLoginController::class, 'checkStatus'])->name('api.qr.status');
+    Route::middleware(['throttle:10,1'])->post('/status', [QRLoginController::class, 'checkStatus'])->name('api.qr.status');
 });
 
 Route::middleware(['auth:sanctum', 'authorized', 'role:user'])->group(function () {
