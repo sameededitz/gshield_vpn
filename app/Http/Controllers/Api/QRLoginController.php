@@ -105,17 +105,27 @@ class QRLoginController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
+                'expired' => true,
                 'message' => 'Invalid token'
             ], 401);
         }
 
-        $qr = QrLogin::where('token', $token)->first();
+        $qr = QRLogin::where('token', $token)->first();
 
-        if (!$qr || $qr->isExpired()) {
+        if (!$qr) {
             return response()->json([
                 'status' => false,
-                'message' => 'QR code expired or not found.'
+                'expired' => true,
+                'message' => 'Token not found.'
             ], 404);
+        }
+
+        if ($qr->isExpired()) {
+            return response()->json([
+                'status' => false,
+                'expired' => true,
+                'message' => 'QR code has expired.',
+            ], 410);
         }
 
         if ($qr->used && $qr->user_id) {
@@ -134,7 +144,8 @@ class QRLoginController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'QR code not yet used or user not found.'
+            'expired' => false,
+            'message' => 'Still waiting for confirmation...',
         ], 202);
     }
 }
